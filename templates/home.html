@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Weather</h2>
+
+    {% if weather %}
+        <p><strong>{{ weather.city }}</strong></p>
+        <p>{{ weather.temperature }}&deg;C (feels like {{ weather.feels_like }}&deg;C)</p>
+        <p>{{ weather.description }}</p>
+    {% else %}
+        <p>Weather data is currently unavailable.</p>
+    {% endif %}
+</section>
+
+<section class="card">
+    <h2>News</h2>
+
+    {% if news and news|length > 0 %}
+        <ul>
+            {% for article in news %}
+                <li>
+                    <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
+                        {{ article.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>News headlines are currently unavailable.</p>
+    {% endif %}
+</section>
+
+<section class="card">
+    <h2>Crypto / Stocks</h2>
+    <p>Market data will go here.</p>
+</section>
+{% endblock %}
