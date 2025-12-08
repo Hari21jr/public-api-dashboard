@@ -1,38 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="card">
+<div class="dashboard-container">
+
+  <!-- Weather Card -->
+  <div class="card">
     <h2>Weather</h2>
-
     {% if weather %}
-        <p><strong>{{ weather.city }}</strong></p>
-        <p>{{ weather.temperature }}&deg;C (feels like {{ weather.feels_like }}&deg;C)</p>
-        <p>{{ weather.description }}</p>
+      <p><strong>{{ weather.city }}</strong></p>
+      <p>{{ weather.temp }}°C</p>
+      <p>{{ weather.description }}</p>
     {% else %}
-        <p>Weather data is currently unavailable.</p>
+      <p>Weather data unavailable right now.</p>
     {% endif %}
-</section>
+  </div>
 
-<section class="card">
-    <h2>News</h2>
-
+  <!-- Market News Card -->
+  <div class="card">
+    <h2>Market News (Stocks & Crypto)</h2>
     {% if news and news|length > 0 %}
-        <ul>
-            {% for article in news %}
-                <li>
-                    <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
-                        {{ article.title }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+      <ul>
+        {% for item in news %}
+          <li>
+            <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+              {{ item.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     {% else %}
-        <p>News headlines are currently unavailable.</p>
+      <p>No market news available right now.</p>
     {% endif %}
-</section>
+  </div>
 
-<section class="card">
+  <!-- Crypto / Stocks Card -->
+  <div class="card">
     <h2>Crypto / Stocks</h2>
-    <p>Market data will go here.</p>
-</section>
+
+    {% if crypto %}
+      <h3 class="card-subheading">Top 5 Cryptocurrencies</h3>
+      <ul class="crypto-list">
+        {% for item in crypto %}
+          <li>
+            <strong>{{ item.name }} ({{ item.symbol }})</strong>:
+            ${{ '%.2f'|format(item.price) }}
+            <span class="{% if item.change_24h >= 0 %}change-positive{% else %}change-negative{% endif %}">
+              ({{ '%.2f'|format(item.change_24h) }}%)
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No crypto data available right now.</p>
+    {% endif %}
+
+    {% if stocks %}
+      <h3 class="card-subheading stocks-heading">Top 5 Stocks</h3>
+      <ul class="stocks-list">
+        {% for item in stocks %}
+          <li>
+            <strong>{{ item.name }} ({{ item.symbol }})</strong>:
+            ${{ '%.2f'|format(item.price) }}
+            <span class="{% if item.change_24h >= 0 %}change-positive{% else %}change-negative{% endif %}">
+              ({{ '%.2f'|format(item.change_24h) }}%)
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No stock data available right now.</p>
+    {% endif %}
+  </div>
+
+</div>
 {% endblock %}
